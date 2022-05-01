@@ -1,8 +1,10 @@
-import { PrismaClient } from "@prisma/client";
 import { hash } from "bcrypt";
+import { getSession } from "next-auth/react";
+import { PrismaClient } from "@prisma/client";
 
 export default async function handler(req, res) {
   const prisma = await new PrismaClient();
+  const session = await getSession({ req });
 
   try {
     if (req.method === "GET") {
@@ -14,6 +16,11 @@ export default async function handler(req, res) {
 
       res.status(200).json({ success: true, users });
     } else if (req.method === "POST") {
+      // Checking if the user is logged in
+      if (session) {
+        res.status(403).json({ success: false, message: "Unauthorized action. Please signin." });
+      }
+
       // Fetching the user data from the request body
       const { name, username, email, password } = req.body;
 

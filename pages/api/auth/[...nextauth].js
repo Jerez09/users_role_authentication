@@ -1,6 +1,6 @@
 import { compare } from "bcrypt";
 import NextAuth from "next-auth/next";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export default NextAuth({
